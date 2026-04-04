@@ -10,12 +10,15 @@ from app.auth.google import router as google_router
 from app.auth.github import router as github_router
 from dotenv import load_dotenv
 from app.tasks import scheduler
-import os
+from app.database import engine, Base
 import app.models
+import os
 
 load_dotenv()
 
 app = FastAPI()
+
+Base.metadata.create_all(bind=engine)
 
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY"))
 app.include_router(google_router)
