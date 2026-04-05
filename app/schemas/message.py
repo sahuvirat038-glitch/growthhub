@@ -13,6 +13,7 @@ class MessageResponse(BaseModel):
     content: str
     channel_id: UUID
     author_id: UUID
+    author_email : Optional[str] = None
     created_at: datetime
     expires_at: Optional[datetime] = None
 

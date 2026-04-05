@@ -32,11 +32,28 @@ def send_message(message: MessageCreate, db: Session = Depends(get_db), current_
 
     db.add(messages)
     db.commit()
-    db.refresh(messages)
-
+    db.r
     return messages
 
+
 @router.get("/{channel_id}", response_model=List[MessageResponse])
-def get_history(channel_id : UUID , db: Session = Depends(get_db), current_user = Depends(get_current_user)):
-    all_messgaes = db.query(Message).filter(Message.channel_id == channel_id).order_by(Message.created_at).all()
-    return all_messgaes
+def get_history(channel_id: UUID, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+    from app.models.user import User
+    messages = db.query(Message).filter(
+        Message.channel_id == channel_id
+    ).order_by(Message.created_at).all()
+
+    result = []
+    for msg in messages:
+        user = db.query(User).filter(User.id == msg.author_id).first()
+        msg_dict = {
+            "id": msg.id,
+            "content": msg.content,
+            "channel_id": msg.channel_id,
+            "author_id": msg.author_id,
+            "author_email": user.email if user else None,
+            "created_at": msg.created_at,
+            "expires_at": msg.expires_at
+        }
+        result.append(msg_dict)
+    return result
