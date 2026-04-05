@@ -14,7 +14,7 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
 
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
-REDIRECT_URI = "http://127.0.0.1:8000/auth/google/callback"
+REDIRECT_URI = "https://web-production-5623.up.railway.app/auth/google/callback"
 
 @router.get("/google")
 async def google_login():

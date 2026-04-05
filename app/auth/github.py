@@ -14,7 +14,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
 GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
-REDIRECT_URI = "http://127.0.0.1:8000/auth/github/callback"
+REDIRECT_URI = "https://web-production-5623.up.railway.app/auth/github/callback"
 
 @router.get("/github")
 async def github_login():
