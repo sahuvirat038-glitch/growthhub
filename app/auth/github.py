@@ -68,4 +68,4 @@ async def github_callback(code: str, db: Session = Depends(get_db)):
         existing_user = new_user
 
     jwt_token = create_access_token(data={"sub": existing_user.email})
-    return {"access_token": jwt_token, "token_type": "bearer"}
+    return RedirectResponse(f"http://localhost:5173/oauth?token={jwt_token}")
