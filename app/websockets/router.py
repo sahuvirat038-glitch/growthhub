@@ -19,6 +19,20 @@ async def websocket_endpoint(channel_id: str, websocket: WebSocket, token: str, 
     try:
         while True:
             data = await websocket.receive_text()
+
+            # Save to database
+            from app.models.user import User
+            user = db.query(User).filter(User.email == email).first()
+            if user:
+                new_message = Message(
+                    content=data,
+                    channel_id=channel_id,
+                    author_id=user.id
+                )
+                db.add(new_message)
+                db.commit()
+
+            # Broadcast to everyone
             await manager.broadcast(channel_id, f"{email}: {data}")
     except WebSocketDisconnect:
         manager.disconnect(channel_id, websocket)
